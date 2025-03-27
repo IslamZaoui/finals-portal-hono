@@ -9,6 +9,7 @@ const EnvSchema = z.object({
     NODE_ENV: z.enum(["production", "development"]).default("development"),
     PORT: z.coerce.number().default(5173),
     LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
+    DATABASE_URL: z.string({ required_error: "DATABASE_URL is required" }).url("Invalid DATABASE_URL"),
 });
 
 const { data: env, error } = EnvSchema.safeParse(process.env);
