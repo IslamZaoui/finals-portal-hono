@@ -3,6 +3,7 @@ import type { Context, Env } from "hono";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 
 import type { Session } from "@/db/types";
+import { dev } from "@/env";
 
 const COOKIE_NAME = "sessionToken";
 
@@ -14,6 +15,7 @@ export function setSessionTokenCookie<T extends Env = Env>(c: Context<T>, sessio
 	setCookie(c, COOKIE_NAME, session.token, {
 		httpOnly: true,
 		sameSite: "Lax",
+		secure: !dev,
 		expires: session.expiresAt,
 		path: "/"
 	});

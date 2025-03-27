@@ -32,7 +32,7 @@ export const signup: AppRouteHandler<SignupRoute> = async (c) => {
 		);
 	}
 
-	if (!isPasswordStrong(password)) {
+	if (!(await isPasswordStrong(password))) {
 		return c.json(
 			{
 				code: "password_weak",
@@ -76,7 +76,17 @@ export const signin: AppRouteHandler<SigninRoute> = async (c) => {
 		);
 	}
 
-	const isPasswordValid = !user.passwordHash || (await verifyPasswordHash(user.passwordHash, password));
+	if (!user.passwordHash) {
+		return c.json(
+			{
+				code: "invalid_credentials",
+				message: "invalid username or password"
+			} as const,
+			HttpStatusCodes.BAD_REQUEST
+		);
+	}
+
+	const isPasswordValid = await verifyPasswordHash(user.passwordHash, password);
 	if (!isPasswordValid) {
 		return c.json(
 			{
