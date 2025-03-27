@@ -1,8 +1,3 @@
-```
-npm install
-npm run dev
-```
+# Finals Portal API
 
-```
-open http://localhost:3000
-```
+API for the Finals Portal powered by Hono

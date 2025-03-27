@@ -9,6 +9,7 @@
     },
     "scripts": {
         "dev": "tsx watch src/index.ts",
+        "typecheck": "tsc --noEmit",
         "lint": "eslint .",
         "lint:fix": "bun lint --fix"
     },
