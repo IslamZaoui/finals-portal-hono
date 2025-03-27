@@ -3,5 +3,6 @@
 set -e
 
 bun i --frozen-lockfile
+bun format:check
 bun typecheck
 bun lint
