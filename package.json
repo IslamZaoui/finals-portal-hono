@@ -9,6 +9,8 @@
     },
     "scripts": {
         "dev": "tsx watch src/index.ts",
+        "build": "bun scripts/build.ts",
+        "preview": "vercel deploy",
         "typecheck": "tsc --noEmit",
         "lint": "eslint .",
         "lint:fix": "bun lint --fix"
@@ -29,10 +31,12 @@
     },
     "devDependencies": {
         "@antfu/eslint-config": "^4.11.0",
+        "@types/bun": "^1.2.7",
         "@types/node": "^20.11.17",
         "cross-env": "^7.0.3",
         "eslint": "^9.23.0",
         "eslint-plugin-format": "^1.0.1",
-        "tsx": "^4.7.1"
+        "tsx": "^4.7.1",
+        "vercel": "^41.4.1"
     }
 }
