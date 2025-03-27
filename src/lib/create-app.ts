@@ -5,27 +5,28 @@ import { requestId } from "hono/request-id";
 import { notFound, onError } from "stoker/middlewares";
 import { defaultHook } from "stoker/openapi";
 
+import auth from "@/middlewares/auth";
 import { pinoLogger } from "@/middlewares/pino-logger";
 
 import type { AppBindings, AppOpenAPI } from "./types";
 
 export function createRouter() {
-    return new OpenAPIHono<AppBindings>({
-        strict: false,
-        defaultHook,
-    });
+	return new OpenAPIHono<AppBindings>({
+		strict: false,
+		defaultHook
+	});
 }
 
 export default function createApp() {
-    const app = createRouter();
-    app.use(requestId())
-        .use(pinoLogger());
+	const app = createRouter();
 
-    app.notFound(notFound);
-    app.onError(onError);
-    return app;
+	app.use(requestId()).use(pinoLogger()).use(auth());
+
+	app.notFound(notFound);
+	app.onError(onError);
+	return app;
 }
 
 export function createTestApp<S extends Schema>(router: AppOpenAPI<S>) {
-    return createApp().route("/", router);
+	return createApp().route("/", router);
 }
