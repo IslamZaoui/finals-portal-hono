@@ -1,23 +1,7 @@
-#!/usr/bin/env bun
+#!/bin/sh
 
-import { $ } from 'bun';
+set -e
 
-async function main() {
-  try {
-    console.log('Installing dependencies with frozen lockfile...');
-    await $`bun i --frozen-lockfile`;
-
-    console.log('Running typecheck...');
-    await $`bun typecheck`;
-
-    console.log('Running linting...');
-    await $`bun lint`;
-
-    console.log('All checks passed!');
-  } catch (error) {
-    console.error('One or more checks failed:', error);
-    process.exit(1);
-  }
-}
-
-main();
+bun i --frozen-lockfile
+bun typecheck
+bun lint
