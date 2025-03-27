@@ -17,9 +17,6 @@ export async function verifyPasswordHash(hash: string, password: string): Promis
 }
 
 export async function isPasswordStrong(password: string): Promise<boolean> {
-	if (password.length < 8 || password.length > 255) {
-		return false;
-	}
 	const hash = encodeHexLowerCase(sha1(new TextEncoder().encode(password)));
 	const hashPrefix = hash.slice(0, 5);
 
