@@ -7,15 +7,13 @@ import { tryCatch } from "@/lib/helpers/trycatch";
 import * as schema from "./schema";
 
 const db = drizzle(env.DATABASE_URL, {
-    schema,
+	schema
 });
 
-const { error: migrationError } = await tryCatch(
-    migrate(db, { migrationsFolder: "./drizzle" }),
-);
+const { error: migrationError } = await tryCatch(migrate(db, { migrationsFolder: "./drizzle" }));
 if (migrationError) {
-    console.error("Database migration failed:", migrationError);
-    process.exit(1);
+	console.error("Database migration failed:", migrationError);
+	process.exit(1);
 }
 
 export { db };

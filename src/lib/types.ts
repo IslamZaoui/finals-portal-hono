@@ -5,11 +5,11 @@ import type { PinoLogger } from "hono-pino";
 import type { SessionValidationResult } from "./auth/session";
 
 export interface AppBindings {
-    Variables: {
-        logger: PinoLogger;
-        session: SessionValidationResult;
-    };
-};
+	Variables: {
+		logger: PinoLogger;
+		session: SessionValidationResult;
+	};
+}
 
 // eslint-disable-next-line ts/no-empty-object-type
 export type AppOpenAPI<S extends Schema = {}> = OpenAPIHono<AppBindings, S>;
