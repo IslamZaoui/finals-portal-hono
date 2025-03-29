@@ -1,5 +1,13 @@
 # finals-portal-hono
 
+## 0.1.1
+
+### Patch Changes
+
+- add cors middleware ([#5](https://github.com/IslamZaoui/finals-portal-hono/pull/5))
+
+- add teachers' projects list handler ([#5](https://github.com/IslamZaoui/finals-portal-hono/pull/5))
+
 ## 0.1.0
 
 ### Minor Changes
