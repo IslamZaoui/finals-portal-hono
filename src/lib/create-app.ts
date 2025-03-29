@@ -9,6 +9,7 @@ import { defaultHook } from "stoker/openapi";
 import auth from "@/middlewares/auth";
 import { pinoLogger } from "@/middlewares/pino-logger";
 
+import env from "@/env";
 import type { AppBindings, AppOpenAPI } from "./types";
 
 export function createRouter() {
@@ -26,9 +27,9 @@ export default function createApp() {
 		.use(auth())
 		.use(
 			cors({
-				origin: "*",
+				origin: env.FRONTEND_URL ?? "http://localhost:3000",
 				allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
-				allowHeaders: ["Content-Type"],
+				allowHeaders: ["Content-Type", "Authorization"],
 				credentials: true
 			})
 		);
