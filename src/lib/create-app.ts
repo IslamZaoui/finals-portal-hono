@@ -1,6 +1,7 @@
 import type { Schema } from "hono";
 
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { cors } from "hono/cors";
 import { requestId } from "hono/request-id";
 import { notFound, onError } from "stoker/middlewares";
 import { defaultHook } from "stoker/openapi";
@@ -8,6 +9,7 @@ import { defaultHook } from "stoker/openapi";
 import auth from "@/middlewares/auth";
 import { pinoLogger } from "@/middlewares/pino-logger";
 
+import env from "@/env";
 import type { AppBindings, AppOpenAPI } from "./types";
 
 export function createRouter() {
@@ -20,7 +22,17 @@ export function createRouter() {
 export default function createApp() {
 	const app = createRouter();
 
-	app.use(requestId()).use(pinoLogger()).use(auth());
+	app.use(requestId())
+		.use(pinoLogger())
+		.use(auth())
+		.use(
+			cors({
+				origin: env.FRONTEND_URL ?? "http://localhost:3000",
+				allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
+				allowHeaders: ["Content-Type", "Authorization"],
+				credentials: true
+			})
+		);
 
 	app.notFound(notFound);
 	app.onError(onError);
