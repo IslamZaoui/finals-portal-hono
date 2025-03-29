@@ -1,10 +1,10 @@
 import type { Schema } from "hono";
 
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { cors } from "hono/cors";
 import { requestId } from "hono/request-id";
 import { notFound, onError } from "stoker/middlewares";
 import { defaultHook } from "stoker/openapi";
-import { cors } from "hono/cors";
 
 import auth from "@/middlewares/auth";
 import { pinoLogger } from "@/middlewares/pino-logger";
@@ -24,12 +24,14 @@ export default function createApp() {
 	app.use(requestId())
 		.use(pinoLogger())
 		.use(auth())
-		.use(cors({
-			origin: "*",
-			allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
-			allowHeaders: ["Content-Type"],
-			credentials: true
-		}));
+		.use(
+			cors({
+				origin: "*",
+				allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
+				allowHeaders: ["Content-Type"],
+				credentials: true
+			})
+		);
 
 	app.notFound(notFound);
 	app.onError(onError);
