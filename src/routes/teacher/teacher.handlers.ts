@@ -32,9 +32,15 @@ export const projectsList: AppRouteHandler<ProjectsListRoute> = async (c) => {
 
 	let query = { where: eq(projectsTable.author, session.userId) };
 	const conditions = [eq(projectsTable.author, session.userId)];
-	if (q) conditions.push(ilike(projectsTable.title, `%${q}%`));
-	if (specialty) conditions.push(eq(projectsTable.specialty, specialty));
-	if (category) conditions.push(eq(projectsTable.category, category));
+	if (q) {
+		conditions.push(ilike(projectsTable.title, `%${q}%`));
+	}
+	if (specialty) {
+		conditions.push(eq(projectsTable.specialty, specialty));
+	}
+	if (category) {
+		conditions.push(eq(projectsTable.category, category));
+	}
 	query = { where: and(...conditions) as SQL<unknown> };
 
 	const data = await db.query.projectsTable.findMany(query);
