@@ -1,10 +1,10 @@
 import type { OpenAPIHono, RouteConfig, RouteHandler } from "@hono/zod-openapi";
-import type { Schema } from "hono";
+import type { Env, Schema } from "hono";
 import type { PinoLogger } from "hono-pino";
 
 import type { SessionValidationResult } from "./auth/session";
 
-export interface AppBindings {
+export interface AppBindings extends Env {
 	Variables: {
 		logger: PinoLogger;
 		session: SessionValidationResult;

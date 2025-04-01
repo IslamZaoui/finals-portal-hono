@@ -1,5 +1,3 @@
-import requireAuth from "@/middlewares/require-auth.middleware";
-import requireRole from "@/middlewares/require-role.middeware";
 import { getProjectsRequestSchema, insertProjectSchema, projectSchema } from "@/schemas/project.schema";
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
@@ -11,7 +9,6 @@ export const projectsList = createRoute({
 	path: "/teacher/projects",
 	method: "get",
 	tags,
-	middleware: [requireAuth(), requireRole("teacher")] as const,
 	request: {
 		query: getProjectsRequestSchema
 	},
@@ -28,7 +25,6 @@ export const createProject = createRoute({
 	path: "/teacher/projects",
 	method: "post",
 	tags,
-	middleware: [requireAuth(), requireRole("teacher")] as const,
 	request: {
 		body: jsonContentRequired(insertProjectSchema, "Project info")
 	},
@@ -45,7 +41,6 @@ export const updateProject = createRoute({
 	path: "/teacher/projects/:id",
 	method: "put",
 	tags,
-	middleware: [requireAuth(), requireRole("teacher")] as const,
 	request: {
 		params: z.object({ id: z.string() }),
 		body: jsonContentRequired(insertProjectSchema, "Project info")
@@ -67,7 +62,6 @@ export const deleteProject = createRoute({
 	path: "/teacher/projects/:id",
 	method: "delete",
 	tags,
-	middleware: [requireAuth(), requireRole("teacher")] as const,
 	request: {
 		params: z.object({ id: z.string() })
 	},

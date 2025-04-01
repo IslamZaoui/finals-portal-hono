@@ -1,12 +1,18 @@
 import { db } from "@/db";
 import { projectsTable } from "@/db/schema";
+import { requireAuthRole } from "@/lib/helpers/require";
 import type { AppRouteHandler } from "@/lib/types";
 import type { SQL } from "drizzle-orm";
 import { and, eq, ilike } from "drizzle-orm";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import type { CreateProjectRoute, DeleteProjectRoute, ProjectsListRoute, UpdateProjectRoute } from "./teacher.routes";
 
-export const projectsList: AppRouteHandler<ProjectsListRoute> = async (c) => {
+export const projectsList: AppRouteHandler<ProjectsListRoute> = async (ctx) => {
+	const { res, c } = requireAuthRole(ctx, "teacher");
+	if (res) {
+		return res;
+	}
+
 	const { session } = c.var;
 
 	const { q, specialty, category } = c.req.valid("query");
@@ -29,7 +35,12 @@ export const projectsList: AppRouteHandler<ProjectsListRoute> = async (c) => {
 	return c.json(data, HttpStatusCodes.OK);
 };
 
-export const createProject: AppRouteHandler<CreateProjectRoute> = async (c) => {
+export const createProject: AppRouteHandler<CreateProjectRoute> = async (ctx) => {
+	const { res, c } = requireAuthRole(ctx, "teacher");
+	if (res) {
+		return res;
+	}
+
 	const { session } = c.var;
 
 	const { title, description, specialty, category } = c.req.valid("json");
@@ -48,7 +59,12 @@ export const createProject: AppRouteHandler<CreateProjectRoute> = async (c) => {
 	return c.json(project, HttpStatusCodes.CREATED);
 };
 
-export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (c) => {
+export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (ctx) => {
+	const { res, c } = requireAuthRole(ctx, "teacher");
+	if (res) {
+		return res;
+	}
+
 	const { session } = c.var;
 
 	const { id } = c.req.valid("param");
@@ -82,7 +98,12 @@ export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (c) => {
 	return c.json(project, HttpStatusCodes.OK);
 };
 
-export const deleteProject: AppRouteHandler<DeleteProjectRoute> = async (c) => {
+export const deleteProject: AppRouteHandler<DeleteProjectRoute> = async (ctx) => {
+	const { res, c } = requireAuthRole(ctx, "teacher");
+	if (res) {
+		return res;
+	}
+
 	const { session } = c.var;
 
 	const { id } = c.req.valid("param");
