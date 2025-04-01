@@ -8,30 +8,11 @@ import type { CreateProjectRoute, DeleteProjectRoute, ProjectsListRoute, UpdateP
 
 export const projectsList: AppRouteHandler<ProjectsListRoute> = async (c) => {
 	const { session } = c.var;
-	if (!session) {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
-
-	if (session.user.role !== "teacher") {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
 
 	const { q, specialty, category } = c.req.valid("query");
 
-	let query = { where: eq(projectsTable.author, session.userId) };
-	const conditions = [eq(projectsTable.author, session.userId)];
+	let query = { where: eq(projectsTable.author, session!.userId) };
+	const conditions = [eq(projectsTable.author, session!.userId)];
 	if (q) {
 		conditions.push(ilike(projectsTable.title, `%${q}%`));
 	}
@@ -50,25 +31,6 @@ export const projectsList: AppRouteHandler<ProjectsListRoute> = async (c) => {
 
 export const createProject: AppRouteHandler<CreateProjectRoute> = async (c) => {
 	const { session } = c.var;
-	if (!session) {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
-
-	if (session.user.role !== "teacher") {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
 
 	const { title, description, specialty, category } = c.req.valid("json");
 
@@ -79,7 +41,7 @@ export const createProject: AppRouteHandler<CreateProjectRoute> = async (c) => {
 			description,
 			specialty,
 			category,
-			author: session.userId
+			author: session!.userId
 		})
 		.returning();
 
@@ -88,28 +50,23 @@ export const createProject: AppRouteHandler<CreateProjectRoute> = async (c) => {
 
 export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (c) => {
 	const { session } = c.var;
-	if (!session) {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
-
-	if (session.user.role !== "teacher") {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
 
 	const { id } = c.req.valid("param");
 	const { title, description, specialty, category } = c.req.valid("json");
+
+	const existingProject = await db.query.projectsTable.findFirst({
+		where: and(eq(projectsTable.id, id), eq(projectsTable.author, session!.userId))
+	});
+
+	if (!existingProject) {
+		return c.json(
+			{
+				code: "not_found",
+				message: "Project not found"
+			} as const,
+			HttpStatusCodes.NOT_FOUND
+		);
+	}
 
 	const [project] = await db
 		.update(projectsTable)
@@ -119,52 +76,22 @@ export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (c) => {
 			specialty,
 			category
 		})
-		.where(and(eq(projectsTable.id, id), eq(projectsTable.author, session.userId)))
+		.where(and(eq(projectsTable.id, id), eq(projectsTable.author, session!.userId)))
 		.returning();
-
-	if (!project) {
-		return c.json(
-			{
-				code: "not_found",
-				message: "Project not found"
-			} as const,
-			HttpStatusCodes.NOT_FOUND
-		);
-	}
 
 	return c.json(project, HttpStatusCodes.OK);
 };
 
 export const deleteProject: AppRouteHandler<DeleteProjectRoute> = async (c) => {
 	const { session } = c.var;
-	if (!session) {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
-
-	if (session.user.role !== "teacher") {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
 
 	const { id } = c.req.valid("param");
 
-	const [project] = await db
-		.delete(projectsTable)
-		.where(and(eq(projectsTable.id, id), eq(projectsTable.author, session.userId)))
-		.returning();
+	const existingProject = await db.query.projectsTable.findFirst({
+		where: and(eq(projectsTable.id, id), eq(projectsTable.author, session!.userId))
+	});
 
-	if (!project) {
+	if (!existingProject) {
 		return c.json(
 			{
 				code: "not_found",
@@ -173,6 +100,8 @@ export const deleteProject: AppRouteHandler<DeleteProjectRoute> = async (c) => {
 			HttpStatusCodes.NOT_FOUND
 		);
 	}
+
+	await db.delete(projectsTable).where(and(eq(projectsTable.id, id), eq(projectsTable.author, session!.userId)));
 
 	return c.json({ message: "Project deleted successfully" }, HttpStatusCodes.OK);
 };
