@@ -29,7 +29,7 @@ export default function createApp() {
 			cors({
 				origin: env.FRONTEND_URL ?? "http://localhost:3000",
 				allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
-				allowHeaders: ["Content-Type", "Authorization"],
+				allowHeaders: ["Content-Type", "Cookie", "Set-Cookie"],
 				credentials: true
 			})
 		);
