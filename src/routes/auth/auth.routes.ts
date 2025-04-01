@@ -77,7 +77,7 @@ export const me = createRoute({
 
 export const signout = createRoute({
 	path: "/auth/signout",
-	method: "post",
+	method: "get",
 	tags,
 	responses: {
 		[HttpStatusCodes.OK]: jsonContent(
