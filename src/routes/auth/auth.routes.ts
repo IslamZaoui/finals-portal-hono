@@ -1,4 +1,6 @@
-import { meResponseSchema, signInSchema, signUpSchema } from "@/lib/schemas/auth.schema";
+import requireAuth from "@/middlewares/require-auth.middleware";
+import requireGuest from "@/middlewares/require-guest.middleware";
+import { meResponseSchema, signInSchema, signUpSchema } from "@/schemas/auth.schema";
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";
@@ -10,6 +12,7 @@ export const signup = createRoute({
 	path: "/auth/signup",
 	method: "post",
 	tags,
+	middleware: [requireGuest()] as const,
 	request: {
 		body: jsonContentRequired(signUpSchema, "User info and credentials")
 	},
@@ -41,6 +44,7 @@ export const signin = createRoute({
 	path: "/auth/signin",
 	method: "post",
 	tags,
+	middleware: [requireGuest()] as const,
 	request: {
 		body: jsonContentRequired(signInSchema, "User credentials")
 	},
@@ -68,6 +72,7 @@ export const me = createRoute({
 	path: "/auth/me",
 	method: "get",
 	tags,
+	middleware: [requireAuth()] as const,
 	responses: {
 		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
 			z.object({ code: z.literal("unauthorized"), message: z.literal("Unauthorized") }),

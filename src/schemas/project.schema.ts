@@ -1,6 +1,6 @@
 import { projectsTable } from "@/db/schema";
+import { schemaFactory } from "@/lib/factory";
 import { z } from "@hono/zod-openapi";
-import { schemaFactory } from "../factory";
 
 export const getProjectsRequestSchema = z.object({
 	q: z.string().optional(),
@@ -9,3 +9,11 @@ export const getProjectsRequestSchema = z.object({
 });
 
 export const projectSchema = schemaFactory.createSelectSchema(projectsTable);
+
+export const insertProjectSchema = schemaFactory
+	.createInsertSchema(projectsTable)
+	.omit({ id: true, createdAt: true, updatedAt: true });
+
+export const updateProjectSchema = schemaFactory
+	.createUpdateSchema(projectsTable)
+	.omit({ id: true, createdAt: true, updatedAt: true });

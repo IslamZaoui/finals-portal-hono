@@ -1,7 +1,9 @@
-import { getProjectsRequestSchema, projectSchema } from "@/lib/schemas/project.schema";
+import requireAuth from "@/middlewares/require-auth.middleware";
+import requireRole from "@/middlewares/require-role.middeware";
+import { getProjectsRequestSchema, insertProjectSchema, projectSchema } from "@/schemas/project.schema";
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
-import { jsonContent } from "stoker/openapi/helpers";
+import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";
 
 const tags = ["Teacher"];
 
@@ -9,6 +11,7 @@ export const projectsList = createRoute({
 	path: "/teacher/projects",
 	method: "get",
 	tags,
+	middleware: [requireAuth(), requireRole("teacher")] as const,
 	request: {
 		query: getProjectsRequestSchema
 	},
@@ -21,4 +24,70 @@ export const projectsList = createRoute({
 	}
 });
 
+export const createProject = createRoute({
+	path: "/teacher/projects",
+	method: "post",
+	tags,
+	middleware: [requireAuth(), requireRole("teacher")] as const,
+	request: {
+		body: jsonContentRequired(insertProjectSchema, "Project info")
+	},
+	responses: {
+		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+			z.object({ code: z.literal("unauthorized"), message: z.literal("Unauthorized") }),
+			"Unauthorized"
+		),
+		[HttpStatusCodes.CREATED]: jsonContent(projectSchema, "Project created")
+	}
+});
+
+export const updateProject = createRoute({
+	path: "/teacher/projects/:id",
+	method: "put",
+	tags,
+	middleware: [requireAuth(), requireRole("teacher")] as const,
+	request: {
+		params: z.object({ id: z.string() }),
+		body: jsonContentRequired(insertProjectSchema, "Project info")
+	},
+	responses: {
+		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+			z.object({ code: z.literal("unauthorized"), message: z.literal("Unauthorized") }),
+			"Unauthorized"
+		),
+		[HttpStatusCodes.NOT_FOUND]: jsonContent(
+			z.object({ code: z.literal("not_found"), message: z.literal("Project not found") }),
+			"Project not found"
+		),
+		[HttpStatusCodes.OK]: jsonContent(projectSchema, "Project updated")
+	}
+});
+
+export const deleteProject = createRoute({
+	path: "/teacher/projects/:id",
+	method: "delete",
+	tags,
+	middleware: [requireAuth(), requireRole("teacher")] as const,
+	request: {
+		params: z.object({ id: z.string() })
+	},
+	responses: {
+		[HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+			z.object({ code: z.literal("unauthorized"), message: z.literal("Unauthorized") }),
+			"Unauthorized"
+		),
+		[HttpStatusCodes.NOT_FOUND]: jsonContent(
+			z.object({ code: z.literal("not_found"), message: z.literal("Project not found") }),
+			"Project not found"
+		),
+		[HttpStatusCodes.OK]: jsonContent(
+			z.object({ message: z.literal("Project deleted successfully") }),
+			"Project deleted"
+		)
+	}
+});
+
 export type ProjectsListRoute = typeof projectsList;
+export type CreateProjectRoute = typeof createProject;
+export type UpdateProjectRoute = typeof updateProject;
+export type DeleteProjectRoute = typeof deleteProject;
