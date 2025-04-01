@@ -1,5 +1,11 @@
 # finals-portal-hono
 
+## 0.2.1
+
+### Patch Changes
+
+- fix some issues ([#9](https://github.com/IslamZaoui/finals-portal-hono/pull/9))
+
 ## 0.2.0
 
 ### Minor Changes
