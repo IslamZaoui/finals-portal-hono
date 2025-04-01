@@ -1,7 +1,7 @@
 import { sessionsTable, usersTable } from "@/db/schema";
 import { usersWithoutPasswordView } from "@/db/views";
-import { z } from "@hono/zod-openapi";
 import { schemaFactory } from "@/lib/factory";
+import { z } from "@hono/zod-openapi";
 
 const username = z
 	.string({ required_error: "Username is required" })
