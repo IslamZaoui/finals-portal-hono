@@ -10,16 +10,6 @@ import { createUser, getUserByUsername, isUsernameAvailable } from "@/lib/auth/u
 import type { MeRoute, SigninRoute, SignupRoute, SingoutRoute } from "./auth.routes";
 
 export const signup: AppRouteHandler<SignupRoute> = async (c) => {
-	if (c.var.session) {
-		return c.json(
-			{
-				code: "already_signed_in",
-				message: "You are already signed in"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
-
 	const { username, displayName, role, password } = c.req.valid("json");
 
 	if (!(await isUsernameAvailable(username))) {
@@ -53,16 +43,6 @@ export const signup: AppRouteHandler<SignupRoute> = async (c) => {
 };
 
 export const signin: AppRouteHandler<SigninRoute> = async (c) => {
-	if (c.var.session) {
-		return c.json(
-			{
-				code: "already_signed_in",
-				message: "You are already signed in"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
-
 	const { username, password } = c.req.valid("json");
 
 	const user = await getUserByUsername(username);
@@ -113,16 +93,5 @@ export const signout: AppRouteHandler<SingoutRoute> = async (c) => {
 };
 
 export const me: AppRouteHandler<MeRoute> = async (c) => {
-	const { session } = c.var;
-	if (!session) {
-		return c.json(
-			{
-				code: "unauthorized",
-				message: "Unauthorized"
-			} as const,
-			HttpStatusCodes.UNAUTHORIZED
-		);
-	}
-
-	return c.json(session, HttpStatusCodes.OK);
+	return c.json(c.var.session!, HttpStatusCodes.OK);
 };

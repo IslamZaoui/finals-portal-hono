@@ -6,8 +6,8 @@ import { requestId } from "hono/request-id";
 import { notFound, onError } from "stoker/middlewares";
 import { defaultHook } from "stoker/openapi";
 
-import auth from "@/middlewares/auth";
-import { pinoLogger } from "@/middlewares/pino-logger";
+import auth from "@/middlewares/auth.middleware";
+import { pinoLogger } from "@/middlewares/pino-logger.middleware";
 
 import env from "@/env";
 import type { AppBindings, AppOpenAPI } from "./types";
