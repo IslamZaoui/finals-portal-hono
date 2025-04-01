@@ -1,4 +1,4 @@
-import { getProjectsRequestSchema, insertProjectSchema, projectSchema } from "@/lib/schemas/project.schema";
+import { getProjectsRequestSchema, insertProjectSchema, projectSchema } from "@/schemas/project.schema";
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";

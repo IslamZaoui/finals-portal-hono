@@ -1,6 +1,6 @@
 import { projectsTable } from "@/db/schema";
 import { z } from "@hono/zod-openapi";
-import { schemaFactory } from "../factory";
+import { schemaFactory } from "@/lib/factory";
 
 export const getProjectsRequestSchema = z.object({
 	q: z.string().optional(),

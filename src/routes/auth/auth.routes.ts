@@ -1,4 +1,4 @@
-import { meResponseSchema, signInSchema, signUpSchema } from "@/lib/schemas/auth.schema";
+import { meResponseSchema, signInSchema, signUpSchema } from "@/schemas/auth.schema";
 import { createRoute, z } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";
