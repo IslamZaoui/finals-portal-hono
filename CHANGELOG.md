@@ -1,5 +1,15 @@
 # finals-portal-hono
 
+## 0.2.0
+
+### Minor Changes
+
+- teacher's projects create/update/delete endpoints ([#7](https://github.com/IslamZaoui/finals-portal-hono/pull/7))
+
+### Patch Changes
+
+- add better handling for user state validation & fix issues with delete and update project handler ([#7](https://github.com/IslamZaoui/finals-portal-hono/pull/7))
+
 ## 0.1.1
 
 ### Patch Changes
