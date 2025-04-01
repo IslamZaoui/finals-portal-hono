@@ -9,3 +9,5 @@ export const getProjectsRequestSchema = z.object({
 });
 
 export const projectSchema = schemaFactory.createSelectSchema(projectsTable);
+export const insertProjectSchema = schemaFactory.createInsertSchema(projectsTable);
+export const updateProjectSchema = schemaFactory.createUpdateSchema(projectsTable);
