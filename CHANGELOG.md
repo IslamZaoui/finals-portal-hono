@@ -1,5 +1,11 @@
 # finals-portal-hono
 
+## 0.3.0
+
+### Minor Changes
+
+- return user's session data after auth ([`64a7073`](https://github.com/IslamZaoui/finals-portal-hono/commit/64a7073623a0e9691dbbea46461505660ff01a1e))
+
 ## 0.2.3
 
 ### Patch Changes
