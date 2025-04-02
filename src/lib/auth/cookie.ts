@@ -12,7 +12,7 @@ export function getSessionTokenCookie<T extends Env = Env>(c: Context<T>) {
 export function setSessionTokenCookie<T extends Env = Env>(c: Context<T>, session: Session) {
 	setCookie(c, COOKIE_NAME, session.token, {
 		httpOnly: true,
-		sameSite: "None",
+		sameSite: "lax",
 		// secure: !dev, disabled for dev server
 		expires: session.expiresAt,
 		path: "/"

@@ -1,6 +1,6 @@
 import { createErrorObjectSchema } from "@/lib/helpers/response-schemas";
-import { meResponseSchema, signInSchema, signUpSchema } from "@/schemas/auth.schema";
-import { createRoute, z } from "@hono/zod-openapi";
+import { signInSchema, signUpSchema, userSessionSchema } from "@/schemas/auth.schema";
+import { createRoute } from "@hono/zod-openapi";
 import * as HttpStatusCodes from "stoker/http-status-codes";
 import { jsonContent, jsonContentRequired } from "stoker/openapi/helpers";
 import { createErrorSchema, createMessageObjectSchema } from "stoker/openapi/schemas";
@@ -31,10 +31,7 @@ export const signup = createRoute({
 			createErrorSchema(signUpSchema),
 			"Sign up validation error"
 		),
-		[HttpStatusCodes.OK]: jsonContent(
-			z.object({ message: z.literal("Signed up successfully") }),
-			"Signed up successfully"
-		)
+		[HttpStatusCodes.OK]: jsonContent(userSessionSchema, "User's session and info")
 	}
 });
 
@@ -58,7 +55,7 @@ export const signin = createRoute({
 			createErrorSchema(signInSchema),
 			"Sign in validation error"
 		),
-		[HttpStatusCodes.OK]: jsonContent(createMessageObjectSchema("Signed in successfully"), "Signed in successfully")
+		[HttpStatusCodes.OK]: jsonContent(userSessionSchema, "User's session and info")
 	}
 });
 
@@ -71,7 +68,7 @@ export const me = createRoute({
 			createErrorObjectSchema("unauthorized", "Unauthorized"),
 			"Unauthorized error"
 		),
-		[HttpStatusCodes.OK]: jsonContent(meResponseSchema, "User's session and info")
+		[HttpStatusCodes.OK]: jsonContent(userSessionSchema, "User's session and info")
 	}
 });
 

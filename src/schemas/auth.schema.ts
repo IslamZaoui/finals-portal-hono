@@ -45,7 +45,7 @@ export const sessionSchema = schemaFactory.createSelectSchema(sessionsTable);
 export const userSchema = schemaFactory.createSelectSchema(usersTable);
 export const userWithoutPasswordSchema = schemaFactory.createSelectSchema(usersWithoutPasswordView);
 
-export const meResponseSchema = z.object({
+export const userSessionSchema = z.object({
 	...sessionSchema.shape,
 	user: userWithoutPasswordSchema
 });

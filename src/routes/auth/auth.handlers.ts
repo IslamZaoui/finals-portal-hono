@@ -42,7 +42,7 @@ export const signup: AppRouteHandler<SignupRoute> = async (ctx) => {
 	const newSession = await createSession(sessionToken, user.id);
 	setSessionTokenCookie(c, newSession);
 
-	return c.json({ message: "Signed up successfully" } as const, HttpStatusCodes.OK);
+	return c.json({ ...newSession, user } as const, HttpStatusCodes.OK);
 };
 
 export const signin: AppRouteHandler<SigninRoute> = async (ctx) => {
@@ -89,7 +89,7 @@ export const signin: AppRouteHandler<SigninRoute> = async (ctx) => {
 	const newSession = await createSession(sessionToken, user.id);
 	setSessionTokenCookie(c, newSession);
 
-	return c.json({ message: "Signed in successfully" } as const, HttpStatusCodes.OK);
+	return c.json({ ...newSession, user } as const, HttpStatusCodes.OK);
 };
 
 export const signout: AppRouteHandler<SingoutRoute> = async (c) => {
