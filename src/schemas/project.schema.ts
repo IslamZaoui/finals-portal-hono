@@ -12,8 +12,8 @@ export const projectSchema = schemaFactory.createSelectSchema(projectsTable);
 
 export const insertProjectSchema = schemaFactory
 	.createInsertSchema(projectsTable)
-	.omit({ id: true, createdAt: true, updatedAt: true });
+	.omit({ id: true, author: true, createdAt: true, updatedAt: true });
 
 export const updateProjectSchema = schemaFactory
 	.createUpdateSchema(projectsTable)
-	.omit({ id: true, createdAt: true, updatedAt: true });
+	.omit({ id: true, author: true, createdAt: true, updatedAt: true });
