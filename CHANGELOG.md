@@ -1,5 +1,11 @@
 # finals-portal-hono
 
+## 0.2.3
+
+### Patch Changes
+
+- set cookies sameSite to None for cross origin auth ([`76a94c3`](https://github.com/IslamZaoui/finals-portal-hono/commit/76a94c37fe04c6c3a5eb9799ed679b1871ebc782))
+
 ## 0.2.2
 
 ### Patch Changes
