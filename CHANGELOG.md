@@ -1,5 +1,11 @@
 # finals-portal-hono
 
+## 0.2.2
+
+### Patch Changes
+
+- fix some issues with projects route ([#11](https://github.com/IslamZaoui/finals-portal-hono/pull/11))
+
 ## 0.2.1
 
 ### Patch Changes
