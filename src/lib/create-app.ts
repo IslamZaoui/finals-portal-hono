@@ -1,16 +1,15 @@
-import type { Schema } from "hono";
+import type { Schema } from 'hono';
 
-import { OpenAPIHono } from "@hono/zod-openapi";
-import { cors } from "hono/cors";
-import { requestId } from "hono/request-id";
-import { notFound, onError } from "stoker/middlewares";
-import { defaultHook } from "stoker/openapi";
+import type { AppBindings, AppOpenAPI } from './types';
 
-import auth from "@/middlewares/auth.middleware";
-import { pinoLogger } from "@/middlewares/pino-logger.middleware";
-
-import env from "@/env";
-import type { AppBindings, AppOpenAPI } from "./types";
+import env from '@/env';
+import auth from '@/middlewares/auth.middleware';
+import { pinoLogger } from '@/middlewares/pino-logger.middleware';
+import { OpenAPIHono } from '@hono/zod-openapi';
+import { cors } from 'hono/cors';
+import { requestId } from 'hono/request-id';
+import { notFound, onError } from 'stoker/middlewares';
+import { defaultHook } from 'stoker/openapi';
 
 export function createRouter() {
 	return new OpenAPIHono<AppBindings>({
@@ -27,9 +26,9 @@ export default function createApp() {
 		.use(auth())
 		.use(
 			cors({
-				origin: env.FRONTEND_URL ?? "http://localhost:3000",
-				allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"],
-				allowHeaders: ["Content-Type", "Cookie", "Set-Cookie"],
+				origin: env.FRONTEND_URL ?? 'http://localhost:3000',
+				allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+				allowHeaders: ['Content-Type', 'Cookie', 'Set-Cookie'],
 				credentials: true
 			})
 		);
@@ -40,5 +39,5 @@ export default function createApp() {
 }
 
 export function createTestApp<S extends Schema>(router: AppOpenAPI<S>) {
-	return createApp().route("/", router);
+	return createApp().route('/', router);
 }

@@ -1,4 +1,4 @@
-import { z } from "@hono/zod-openapi";
+import { z } from '@hono/zod-openapi';
 
 export function createErrorObjectSchema(code: string, message: string) {
 	return z

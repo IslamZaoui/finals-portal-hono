@@ -1,7 +1,8 @@
-import { pgView } from "drizzle-orm/pg-core";
-import { usersTable } from "./schema";
+import { pgView } from 'drizzle-orm/pg-core';
 
-export const usersWithoutPasswordView = pgView("users_view").as((qb) =>
+import { usersTable } from './schema';
+
+export const usersWithoutPasswordView = pgView('users_view').as((qb) =>
 	qb
 		.select({
 			id: usersTable.id,

@@ -1,28 +1,28 @@
-import { apiReference } from "@scalar/hono-api-reference";
+import type { AppOpenAPI } from './types';
 
-import type { AppOpenAPI } from "./types";
+import { apiReference } from '@scalar/hono-api-reference';
 
-import packageJSON from "../../package.json" with { type: "json" };
+import packageJSON from '../../package.json' with { type: 'json' };
 
 export default function configureOpenAPI(app: AppOpenAPI) {
-	app.doc("/doc", {
-		openapi: "3.0.0",
+	app.doc('/doc', {
+		openapi: '3.0.0',
 		info: {
 			version: packageJSON.version,
-			title: "Finals Portal API"
+			title: 'Finals Portal API'
 		}
 	});
 
 	app.get(
-		"/",
+		'/',
 		apiReference({
-			theme: "saturn",
-			layout: "classic",
+			theme: 'saturn',
+			layout: 'classic',
 			defaultHttpClient: {
-				targetKey: "js",
-				clientKey: "fetch"
+				targetKey: 'js',
+				clientKey: 'fetch'
 			},
-			url: "/doc"
+			url: '/doc'
 		})
 	);
 }

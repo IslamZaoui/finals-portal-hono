@@ -1,11 +1,10 @@
-import { sha256 } from "@oslojs/crypto/sha2";
-import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from "@oslojs/encoding";
-import { eq } from "drizzle-orm";
+import type { Session, User } from '@/db/types';
 
-import type { Session, User } from "@/db/types";
-
-import { db } from "@/db";
-import { sessionsTable, usersTable } from "@/db/schema";
+import { db } from '@/db';
+import { sessionsTable, usersTable } from '@/db/schema';
+import { sha256 } from '@oslojs/crypto/sha2';
+import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
+import { eq } from 'drizzle-orm';
 
 export function generateSessionToken(): string {
 	const bytes = new Uint8Array(20);
@@ -80,5 +79,5 @@ export async function invalidateAllSessions(userId: string): Promise<void> {
 	await db.delete(sessionsTable).where(eq(sessionsTable.userId, userId));
 }
 
-export type UserWithoutPassword = Omit<User, "passwordHash">;
+export type UserWithoutPassword = Omit<User, 'passwordHash'>;
 export type SessionValidationResult = (Session & { user: UserWithoutPassword }) | null;

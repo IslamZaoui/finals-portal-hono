@@ -1,9 +1,9 @@
-import { handle } from "hono/vercel";
+import { handle } from 'hono/vercel';
 
 // eslint-disable-next-line antfu/no-import-dist
-import app from "../dist/app.js";
+import app from '../dist/app.js';
 
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 export const GET = handle(app);
 export const POST = handle(app);
