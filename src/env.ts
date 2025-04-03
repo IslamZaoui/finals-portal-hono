@@ -1,9 +1,4 @@
-/* eslint-disable node/no-process-env */
-import { config } from "dotenv";
-import { expand } from "dotenv-expand";
 import { z } from "zod";
-
-expand(config());
 
 const EnvSchema = z.object({
 	NODE_ENV: z.enum(["production", "development"]).default("development"),
@@ -13,7 +8,7 @@ const EnvSchema = z.object({
 	FRONTEND_URL: z.string().url("Invalid FRONTEND_URL").optional()
 });
 
-const { data: env, error } = EnvSchema.safeParse(process.env);
+const { data: env, error } = EnvSchema.safeParse(Bun.env);
 
 if (error) {
 	console.error("❌ Invalid env:");

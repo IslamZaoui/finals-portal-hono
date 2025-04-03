@@ -1,7 +1,7 @@
 import env from "@/env";
 import { tryCatch } from "@/lib/helpers/trycatch";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { drizzle } from "drizzle-orm/bun-sql";
+import { migrate } from "drizzle-orm/bun-sql/migrator";
 import path from "node:path";
 import * as schema from "./schema";
 

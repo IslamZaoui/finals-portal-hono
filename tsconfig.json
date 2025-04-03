@@ -9,7 +9,7 @@
 		"paths": {
 			"@/*": ["src/*"]
 		},
-		"types": ["node"],
+		"types": ["bun-types"],
 		"strict": true,
 		"skipLibCheck": true
 	},

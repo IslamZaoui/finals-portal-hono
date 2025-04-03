@@ -7,3 +7,5 @@ bun.lockb
 
 # Drizzle migrations
 drizzle/
+.changeset/
+CHANGELOG.md
