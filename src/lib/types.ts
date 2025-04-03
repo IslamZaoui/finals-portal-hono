@@ -1,8 +1,8 @@
-import type { OpenAPIHono, RouteConfig, RouteHandler } from "@hono/zod-openapi";
-import type { Env, Schema } from "hono";
-import type { PinoLogger } from "hono-pino";
+import type { OpenAPIHono, RouteConfig, RouteHandler } from '@hono/zod-openapi';
+import type { Env, Schema } from 'hono';
+import type { PinoLogger } from 'hono-pino';
 
-import type { SessionValidationResult } from "./auth/session";
+import type { SessionValidationResult } from './auth/session';
 
 export interface AppBindings extends Env {
 	Variables: {
@@ -11,7 +11,6 @@ export interface AppBindings extends Env {
 	};
 }
 
-// eslint-disable-next-line ts/no-empty-object-type
 export type AppOpenAPI<S extends Schema = {}> = OpenAPIHono<AppBindings, S>;
 
 export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppBindings>;

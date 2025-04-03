@@ -1,7 +1,6 @@
-import { eq } from "drizzle-orm";
-
-import { db } from "@/db";
-import { usersTable } from "@/db/schema";
+import { db } from '@/db';
+import { usersTable } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export async function getUserByUsername(username: string) {
 	return await db.query.usersTable.findFirst({ where: eq(usersTable.username, username) });
@@ -16,7 +15,7 @@ export async function createUser(data: {
 	username: string;
 	displayName: string;
 	passwordHash: string;
-	role: "student" | "teacher";
+	role: 'student' | 'teacher';
 }) {
 	const [user] = await db.insert(usersTable).values(data).returning();
 	return user;

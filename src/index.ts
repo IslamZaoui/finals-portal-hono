@@ -1,15 +1,9 @@
-import { serve } from "@hono/node-server";
+import app from './app';
+import env from './env';
 
-import app from "./app";
-import env from "./env";
+const server = Bun.serve({
+	fetch: app.fetch,
+	port: env.PORT
+});
 
-serve(
-	{
-		fetch: app.fetch,
-		port: env.PORT
-	},
-	(info) => {
-		// eslint-disable-next-line no-console
-		console.log(`Server is running on http://localhost:${info.port}`);
-	}
-);
+console.log(`Server is running on ${server.url.href}`);

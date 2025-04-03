@@ -1,21 +1,23 @@
-import { db } from "@/db";
-import { projectsTable } from "@/db/schema";
-import { requireAuthRole } from "@/lib/helpers/require";
-import type { AppRouteHandler } from "@/lib/types";
-import type { SQL } from "drizzle-orm";
-import { and, eq, ilike } from "drizzle-orm";
-import * as HttpStatusCodes from "stoker/http-status-codes";
-import type { CreateProjectRoute, DeleteProjectRoute, ProjectsListRoute, UpdateProjectRoute } from "./teacher.routes";
+import type { AppRouteHandler } from '@/lib/types';
+import type { SQL } from 'drizzle-orm';
+
+import type { CreateProjectRoute, DeleteProjectRoute, ProjectsListRoute, UpdateProjectRoute } from './teacher.routes';
+
+import { db } from '@/db';
+import { projectsTable } from '@/db/schema';
+import { requireAuthRole } from '@/lib/helpers/require';
+import { and, eq, ilike } from 'drizzle-orm';
+import * as HttpStatusCodes from 'stoker/http-status-codes';
 
 export const projectsList: AppRouteHandler<ProjectsListRoute> = async (ctx) => {
-	const { res, c } = requireAuthRole(ctx, "teacher");
+	const { res, c } = requireAuthRole(ctx, 'teacher');
 	if (res) {
 		return res;
 	}
 
 	const { session } = c.var;
 
-	const { q, specialty, category } = c.req.valid("query");
+	const { q, specialty, category } = c.req.valid('query');
 
 	let query = { where: eq(projectsTable.author, session!.userId) };
 	const conditions = [eq(projectsTable.author, session!.userId)];
@@ -36,14 +38,14 @@ export const projectsList: AppRouteHandler<ProjectsListRoute> = async (ctx) => {
 };
 
 export const createProject: AppRouteHandler<CreateProjectRoute> = async (ctx) => {
-	const { res, c } = requireAuthRole(ctx, "teacher");
+	const { res, c } = requireAuthRole(ctx, 'teacher');
 	if (res) {
 		return res;
 	}
 
 	const { session } = c.var;
 
-	const { title, description, specialty, category } = c.req.valid("json");
+	const { title, description, specialty, category } = c.req.valid('json');
 
 	const [project] = await db
 		.insert(projectsTable)
@@ -60,15 +62,15 @@ export const createProject: AppRouteHandler<CreateProjectRoute> = async (ctx) =>
 };
 
 export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (ctx) => {
-	const { res, c } = requireAuthRole(ctx, "teacher");
+	const { res, c } = requireAuthRole(ctx, 'teacher');
 	if (res) {
 		return res;
 	}
 
 	const { session } = c.var;
 
-	const { id } = c.req.valid("param");
-	const { title, description, specialty, category } = c.req.valid("json");
+	const { id } = c.req.valid('param');
+	const { title, description, specialty, category } = c.req.valid('json');
 
 	const existingProject = await db.query.projectsTable.findFirst({
 		where: and(eq(projectsTable.id, id), eq(projectsTable.author, session!.userId))
@@ -77,8 +79,8 @@ export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (ctx) =>
 	if (!existingProject) {
 		return c.json(
 			{
-				code: "not_found",
-				message: "Project not found"
+				code: 'not_found',
+				message: 'Project not found'
 			} as const,
 			HttpStatusCodes.NOT_FOUND
 		);
@@ -99,14 +101,14 @@ export const updateProject: AppRouteHandler<UpdateProjectRoute> = async (ctx) =>
 };
 
 export const deleteProject: AppRouteHandler<DeleteProjectRoute> = async (ctx) => {
-	const { res, c } = requireAuthRole(ctx, "teacher");
+	const { res, c } = requireAuthRole(ctx, 'teacher');
 	if (res) {
 		return res;
 	}
 
 	const { session } = c.var;
 
-	const { id } = c.req.valid("param");
+	const { id } = c.req.valid('param');
 
 	const existingProject = await db.query.projectsTable.findFirst({
 		where: and(eq(projectsTable.id, id), eq(projectsTable.author, session!.userId))
@@ -115,8 +117,8 @@ export const deleteProject: AppRouteHandler<DeleteProjectRoute> = async (ctx) =>
 	if (!existingProject) {
 		return c.json(
 			{
-				code: "not_found",
-				message: "Project not found"
+				code: 'not_found',
+				message: 'Project not found'
 			} as const,
 			HttpStatusCodes.NOT_FOUND
 		);
@@ -124,5 +126,5 @@ export const deleteProject: AppRouteHandler<DeleteProjectRoute> = async (ctx) =>
 
 	await db.delete(projectsTable).where(and(eq(projectsTable.id, id), eq(projectsTable.author, session!.userId)));
 
-	return c.json({ message: "Project deleted successfully" }, HttpStatusCodes.OK);
+	return c.json({ message: 'Project deleted successfully' }, HttpStatusCodes.OK);
 };

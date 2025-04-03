@@ -1,6 +1,8 @@
-import type { Context, Input } from "hono";
-import * as HttpStatusCodes from "stoker/http-status-codes";
-import type { AppBindings } from "../types";
+import type { Context, Input } from 'hono';
+
+import type { AppBindings } from '../types';
+
+import * as HttpStatusCodes from 'stoker/http-status-codes';
 
 export function requireGuest<T extends AppBindings, U extends string, D extends Input>(c: Context<T, U, D>) {
 	if (c.var.session) {
@@ -8,7 +10,7 @@ export function requireGuest<T extends AppBindings, U extends string, D extends 
 			c: undefined,
 			res: c.json(
 				{
-					code: "already_authenticated",
+					code: 'already_authenticated',
 					message: "You can't do that while signed in"
 				} as const,
 				HttpStatusCodes.UNAUTHORIZED
@@ -28,8 +30,8 @@ export function requireAuth<T extends AppBindings, U extends string, D extends I
 			c: undefined,
 			res: c.json(
 				{
-					code: "unauthorized",
-					message: "Unauthorized"
+					code: 'unauthorized',
+					message: 'Unauthorized'
 				} as const,
 				HttpStatusCodes.UNAUTHORIZED
 			)
@@ -44,15 +46,15 @@ export function requireAuth<T extends AppBindings, U extends string, D extends I
 
 export function requireAuthRole<T extends AppBindings, U extends string, D extends Input>(
 	c: Context<T, U, D>,
-	role: "teacher" | "student"
+	role: 'teacher' | 'student'
 ) {
 	if (!c.var.session) {
 		return {
 			c: undefined,
 			res: c.json(
 				{
-					code: "unauthorized",
-					message: "Unauthorized"
+					code: 'unauthorized',
+					message: 'Unauthorized'
 				} as const,
 				HttpStatusCodes.UNAUTHORIZED
 			)
@@ -64,8 +66,8 @@ export function requireAuthRole<T extends AppBindings, U extends string, D exten
 			c: undefined,
 			res: c.json(
 				{
-					code: "unauthorized",
-					message: "Unauthorized"
+					code: 'unauthorized',
+					message: 'Unauthorized'
 				} as const,
 				HttpStatusCodes.UNAUTHORIZED
 			)
